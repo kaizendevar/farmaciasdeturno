@@ -27,7 +27,10 @@ class Tracker {
 
     getDataFarmacias = () => new Promise ((res, rej) => {
         puppeteer
-        .launch()
+        .launch({
+            headless: false,
+            args: ['--no-sandbox']
+        })
         .then(browser => browser.newPage())
         .then(page => {
             return page.goto(url).then(function() {
