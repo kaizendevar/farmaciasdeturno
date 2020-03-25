@@ -29,7 +29,7 @@ class Tracker {
         puppeteer
         .launch({
             headless: false,
-            args: ['--no-sandbox']
+            args: ['--disable-setuid-sandbox']
         })
         .then(browser => browser.newPage())
         .then(page => {
