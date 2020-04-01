@@ -27,10 +27,7 @@ class Tracker {
 
     getDataFarmacias = () => new Promise ((res, rej) => {
         puppeteer
-        .launch({
-            headless: false,
-            args: ['--disable-setuid-sandbox']
-        })
+        .launch({ args: ['--no-sandbox']  })
         .then(browser => browser.newPage())
         .then(page => {
             return page.goto(url).then(function() {
@@ -89,7 +86,7 @@ class Tracker {
         http.createServer(function (req, res) {
             res.writeHead(200, {'Content-Type': 'text/plain'});
             res.end(message);
-        }).listen(80);
+        }).listen(5000);
     }    
 
     async getData() { 
