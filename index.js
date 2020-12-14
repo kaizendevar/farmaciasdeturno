@@ -20,7 +20,7 @@ class Tracker {
     initialize = () => {
         this.getData();
 
-        schedule.scheduleJob("0 */1 * * *", () => {
+        schedule.scheduleJob("0 */12 * * *", () => {
             this.getData();
         });
     };
@@ -70,7 +70,7 @@ class Tracker {
     BuilderString(farmacias, fecha) {
         let TelegramMessage = farmacias.reduce((acum,farmacia) => (
             acum + `${farmacia.nombre}\n\n${farmacia.direccion}\n${farmacia.telefono}\n\n ----- \n\n`
-        ),`Farmacias de Turno HOY ${fecha}:\nHASTA LAS 23:59hs \n \n`);        
+        ),`Farmacias de Turno HOY\n${fecha} 20:30 HASTA LAS 08:30hs \n \n`);        
 
         return TelegramMessage;
     }
@@ -83,10 +83,17 @@ class Tracker {
     }
 
     showPage(message) {
+	var srvr = http.createServer(function (req, res) {
+		res.write('Farmacias');
+		res.end();
+	});
+	srvr.listen(4100);
+	srvr.close();
+
         http.createServer(function (req, res) {
             res.writeHead(200, {'Content-Type': 'text/plain'});
             res.end(message);
-        }).listen(5000);
+        }).listen(4100);
     }    
 
     async getData() { 
@@ -94,7 +101,6 @@ class Tracker {
         const farmacias = await this.getDataFarmacias();
         const textofarmacias = this.BuilderString(farmacias, fecha);
         this.sendNotification(textofarmacias);
-        this.showPage(textofarmacias);
     }
 }
 
